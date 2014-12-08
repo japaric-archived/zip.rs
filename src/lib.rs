@@ -21,7 +21,7 @@
 //! ```
 
 #![deny(missing_docs, warnings)]
-#![feature(if_let, macro_rules, tuple_indexing)]
+#![feature(macro_rules)]
 
 macro_rules! min {
     ($x:expr) => { $x };
