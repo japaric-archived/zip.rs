@@ -22,11 +22,11 @@
 /// # impl<T, I> IntoIterator<T, I> for I where I: Iterator<T> {
 /// #     fn into_iter(self) -> I { self }
 /// # }
-/// # impl<'a, T> IntoIterator<&'a T, slice::Items<'a, T>> for &'a [T] {
-/// #     fn into_iter(self) -> slice::Items<'a, T> { self.iter() }
+/// # impl<'a, T> IntoIterator<&'a T, slice::Iter<'a, T>> for &'a [T] {
+/// #     fn into_iter(self) -> slice::Iter<'a, T> { self.iter() }
 /// # }
-/// # impl<'a, T> IntoIterator<&'a mut T, slice::MutItems<'a, T>> for &'a mut [T] {
-/// #     fn into_iter(self) -> slice::MutItems<'a, T> { self.iter_mut() }
+/// # impl<'a, T> IntoIterator<&'a mut T, slice::IterMut<'a, T>> for &'a mut [T] {
+/// #     fn into_iter(self) -> slice::IterMut<'a, T> { self.iter_mut() }
 /// # }
 /// # fn main() {
 /// let chars = &['a', 'b', 'c'];
