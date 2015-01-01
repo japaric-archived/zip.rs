@@ -164,8 +164,8 @@ mod bench {
 
     #[bench]
     fn collect2(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let b = a.clone();
+        let a = [0u8, ..SIZE];
+        let b = a;
 
         z.iter(|| {
             ::Zip2(a.iter(), b.iter()).collect::<Vec<_>>()
@@ -174,8 +174,8 @@ mod bench {
 
     #[bench]
     fn collect2_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let b = a.clone();
+        let a = [0u8, ..SIZE];
+        let b = a;
 
         z.iter(|| {
             a.iter().zip(b.iter()).collect::<Vec<_>>()
@@ -184,8 +184,8 @@ mod bench {
 
     #[bench]
     fn count2(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let b = a.clone();
+        let a = [0u8, ..SIZE];
+        let b = a;
 
         z.iter(|| {
             ::Zip2(a.iter(), b.iter()).count()
@@ -194,8 +194,8 @@ mod bench {
 
     #[bench]
     fn count2_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let b = a.clone();
+        let a = [0u8, ..SIZE];
+        let b = a;
 
         z.iter(|| {
             a.iter().zip(b.iter()).count()
@@ -204,8 +204,8 @@ mod bench {
 
     #[bench]
     fn collect3(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c) = (a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c) = (a, a);
 
         z.iter(|| {
             ::Zip3(a.iter(), b.iter(), c.iter()).collect::<Vec<_>>()
@@ -214,8 +214,8 @@ mod bench {
 
     #[bench]
     fn collect3_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c) = (a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c) = (a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).collect::<Vec<_>>()
@@ -224,8 +224,8 @@ mod bench {
 
     #[bench]
     fn count3(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c) = (a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c) = (a, a);
 
         z.iter(|| {
             ::Zip3(a.iter(), b.iter(), c.iter()).count()
@@ -234,8 +234,8 @@ mod bench {
 
     #[bench]
     fn count3_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c) = (a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c) = (a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).count()
@@ -244,8 +244,8 @@ mod bench {
 
     #[bench]
     fn collect4(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d) = (a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d) = (a, a, a);
 
         z.iter(|| {
             ::Zip4(a.iter(), b.iter(), c.iter(), d.iter()).collect::<Vec<_>>()
@@ -254,8 +254,8 @@ mod bench {
 
     #[bench]
     fn collect4_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d) = (a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d) = (a, a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).zip(d.iter()).collect::<Vec<_>>()
@@ -264,8 +264,8 @@ mod bench {
 
     #[bench]
     fn count4(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d) = (a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d) = (a, a, a);
 
         z.iter(|| {
             ::Zip4(a.iter(), b.iter(), c.iter(), d.iter()).count()
@@ -274,8 +274,8 @@ mod bench {
 
     #[bench]
     fn count4_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d) = (a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d) = (a, a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).zip(d.iter()).count()
@@ -284,8 +284,8 @@ mod bench {
 
     #[bench]
     fn collect5(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d, e) = (a.clone(), a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
             ::Zip5(a.iter(), b.iter(), c.iter(), d.iter(), e.iter()).collect::<Vec<_>>()
@@ -294,8 +294,8 @@ mod bench {
 
     #[bench]
     fn collect5_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d, e) = (a.clone(), a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).zip(d.iter()).zip(e.iter()).collect::<Vec<_>>()
@@ -304,8 +304,8 @@ mod bench {
 
     #[bench]
     fn count5(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d, e) = (a.clone(), a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
             ::Zip5(a.iter(), b.iter(), c.iter(), d.iter(), e.iter()).count()
@@ -314,8 +314,8 @@ mod bench {
 
     #[bench]
     fn count5_(z: &mut Bencher) {
-        let a = Vec::from_elem(SIZE, 0u8);
-        let (b, c, d, e) = (a.clone(), a.clone(), a.clone(), a.clone());
+        let a = [0u8, ..SIZE];
+        let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
             a.iter().zip(b.iter()).zip(c.iter()).zip(d.iter()).zip(e.iter()).count()
