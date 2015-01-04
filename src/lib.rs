@@ -21,7 +21,7 @@
 //! ```
 
 #![deny(missing_docs, warnings)]
-#![feature(macro_rules)]
+#![feature(associated_types, macro_rules)]
 
 macro_rules! min {
     ($x:expr) => { $x };
@@ -32,10 +32,12 @@ macro_rules! min {
 /// Two-iterator zipper
 pub struct Zip2<A, B>(pub A, pub B);
 
-impl<A, B, AI, BI> Iterator<(A, B)> for Zip2<AI, BI> where
-    AI: Iterator<A>,
-    BI: Iterator<B>,
+impl<A, B, AI, BI> Iterator for Zip2<AI, BI> where
+    AI: Iterator<Item=A>,
+    BI: Iterator<Item=B>,
 {
+    type Item = (A, B);
+
     fn next(&mut self) -> Option<(A, B)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
@@ -57,11 +59,13 @@ impl<A, B, AI, BI> Iterator<(A, B)> for Zip2<AI, BI> where
 /// Three-iterator zipper
 pub struct Zip3<A, B, C>(pub A, pub B, pub C);
 
-impl<A, B, C, AI, BI, CI> Iterator<(A, B, C)> for Zip3<AI, BI, CI> where
-    AI: Iterator<A>,
-    BI: Iterator<B>,
-    CI: Iterator<C>,
+impl<A, B, C, AI, BI, CI> Iterator for Zip3<AI, BI, CI> where
+    AI: Iterator<Item=A>,
+    BI: Iterator<Item=B>,
+    CI: Iterator<Item=C>,
 {
+    type Item = (A, B, C);
+
     fn next(&mut self) -> Option<(A, B, C)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
@@ -86,12 +90,14 @@ impl<A, B, C, AI, BI, CI> Iterator<(A, B, C)> for Zip3<AI, BI, CI> where
 /// Four-iterator zipper
 pub struct Zip4<A, B, C, D>(pub A, pub B, pub C, pub D);
 
-impl<A, B, C, D, AI, BI, CI, DI> Iterator<(A, B, C, D)> for Zip4<AI, BI, CI, DI> where
-    AI: Iterator<A>,
-    BI: Iterator<B>,
-    CI: Iterator<C>,
-    DI: Iterator<D>,
+impl<A, B, C, D, AI, BI, CI, DI> Iterator for Zip4<AI, BI, CI, DI> where
+    AI: Iterator<Item=A>,
+    BI: Iterator<Item=B>,
+    CI: Iterator<Item=C>,
+    DI: Iterator<Item=D>,
 {
+    type Item = (A, B, C, D);
+
     fn next(&mut self) -> Option<(A, B, C, D)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
@@ -119,14 +125,15 @@ impl<A, B, C, D, AI, BI, CI, DI> Iterator<(A, B, C, D)> for Zip4<AI, BI, CI, DI>
 /// Five-iterator zipper
 pub struct Zip5<A, B, C, D, E>(pub A, pub B, pub C, pub D, pub E);
 
-impl<A, B, C, D, E, AI, BI, CI, DI, EI> Iterator<(A, B, C, D, E)>
-for Zip5<AI, BI, CI, DI, EI> where
-    AI: Iterator<A>,
-    BI: Iterator<B>,
-    CI: Iterator<C>,
-    DI: Iterator<D>,
-    EI: Iterator<E>,
+impl<A, B, C, D, E, AI, BI, CI, DI, EI> Iterator for Zip5<AI, BI, CI, DI, EI> where
+    AI: Iterator<Item=A>,
+    BI: Iterator<Item=B>,
+    CI: Iterator<Item=C>,
+    DI: Iterator<Item=D>,
+    EI: Iterator<Item=E>,
 {
+    type Item = (A, B, C, D, E);
+
     fn next(&mut self) -> Option<(A, B, C, D, E)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
@@ -164,7 +171,7 @@ mod bench {
 
     #[bench]
     fn collect2(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let b = a;
 
         z.iter(|| {
@@ -174,7 +181,7 @@ mod bench {
 
     #[bench]
     fn collect2_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let b = a;
 
         z.iter(|| {
@@ -184,7 +191,7 @@ mod bench {
 
     #[bench]
     fn count2(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let b = a;
 
         z.iter(|| {
@@ -194,7 +201,7 @@ mod bench {
 
     #[bench]
     fn count2_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let b = a;
 
         z.iter(|| {
@@ -204,7 +211,7 @@ mod bench {
 
     #[bench]
     fn collect3(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c) = (a, a);
 
         z.iter(|| {
@@ -214,7 +221,7 @@ mod bench {
 
     #[bench]
     fn collect3_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c) = (a, a);
 
         z.iter(|| {
@@ -224,7 +231,7 @@ mod bench {
 
     #[bench]
     fn count3(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c) = (a, a);
 
         z.iter(|| {
@@ -234,7 +241,7 @@ mod bench {
 
     #[bench]
     fn count3_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c) = (a, a);
 
         z.iter(|| {
@@ -244,7 +251,7 @@ mod bench {
 
     #[bench]
     fn collect4(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d) = (a, a, a);
 
         z.iter(|| {
@@ -254,7 +261,7 @@ mod bench {
 
     #[bench]
     fn collect4_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d) = (a, a, a);
 
         z.iter(|| {
@@ -264,7 +271,7 @@ mod bench {
 
     #[bench]
     fn count4(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d) = (a, a, a);
 
         z.iter(|| {
@@ -274,7 +281,7 @@ mod bench {
 
     #[bench]
     fn count4_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d) = (a, a, a);
 
         z.iter(|| {
@@ -284,7 +291,7 @@ mod bench {
 
     #[bench]
     fn collect5(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
@@ -294,7 +301,7 @@ mod bench {
 
     #[bench]
     fn collect5_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
@@ -304,7 +311,7 @@ mod bench {
 
     #[bench]
     fn count5(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
@@ -314,7 +321,7 @@ mod bench {
 
     #[bench]
     fn count5_(z: &mut Bencher) {
-        let a = [0u8, ..SIZE];
+        let a = [0u8; SIZE];
         let (b, c, d, e) = (a, a, a, a);
 
         z.iter(|| {
