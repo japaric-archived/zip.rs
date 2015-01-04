@@ -16,10 +16,10 @@
 /// # #[phase(plugin)]
 /// # extern crate zip_macros;
 /// # use std::slice;
-/// # trait IntoIterator<T, I> where I: Iterator<T> {
+/// # trait IntoIterator<T, I> where I: Iterator<Item=T> {
 /// #     fn into_iter(self) -> I;
 /// # }
-/// # impl<T, I> IntoIterator<T, I> for I where I: Iterator<T> {
+/// # impl<T, I> IntoIterator<T, I> for I where I: Iterator<Item=T> {
 /// #     fn into_iter(self) -> I { self }
 /// # }
 /// # impl<'a, T> IntoIterator<&'a T, slice::Iter<'a, T>> for &'a [T] {
