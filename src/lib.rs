@@ -63,16 +63,16 @@
 #[macro_export]
 macro_rules! zip {
     ($a:expr, $b:expr) => {
-        ::zip::Zip2(($a).into_iter(), ($b).into_iter())
+        $crate::Zip2(($a).into_iter(), ($b).into_iter())
     };
     ($a:expr, $b:expr, $c:expr) => {
-        ::zip::Zip3(($a).into_iter(), ($b).into_iter(), ($c).into_iter())
+        $crate::Zip3(($a).into_iter(), ($b).into_iter(), ($c).into_iter())
     };
     ($a:expr, $b:expr, $c:expr, $d:expr) => {
-        ::zip::Zip4(($a).into_iter(), ($b).into_iter(), ($c).into_iter(), ($d).into_iter())
+        $crate::Zip4(($a).into_iter(), ($b).into_iter(), ($c).into_iter(), ($d).into_iter())
     };
     ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr) => {
-        ::zip::Zip5(
+        $crate::Zip5(
             ($a).into_iter(),
             ($b).into_iter(),
             ($c).into_iter(),
