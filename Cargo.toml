@@ -4,5 +4,7 @@ name = "zip"
 version = "0.0.0"
 authors = ["Jorge Aparicio <japaricious@gmail.com>"]
 
-[dev-dependencies.zip_macros]
-path = "macros"
+[lib]
+
+name = "zip"
+plugin = true

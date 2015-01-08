@@ -21,7 +21,67 @@
 //! ```
 
 #![deny(missing_docs, warnings)]
-#![feature(associated_types, macro_rules)]
+
+/// This macro emulates an "any-arity" free function that zips iterators
+///
+/// **Note** This macro calls `into_iter()` on the inputs. For this reason, this macro won't work
+/// until `IntoIterator` lands in stdlib, or unless you provide your own `IntoIterator` trait.
+///
+/// # Examples
+///
+/// ```
+/// #[macro_use]
+/// extern crate zip;
+///
+/// # use std::slice;
+/// # trait IntoIterator {
+/// #     type Iter: Iterator;
+/// #     fn into_iter(self) -> Self::Iter;
+/// # }
+/// # impl<I> IntoIterator for I where I: Iterator {
+/// #     type Iter = I;
+/// #     fn into_iter(self) -> I { self }
+/// # }
+/// # impl<'a, T> IntoIterator for &'a [T] {
+/// #     type Iter = slice::Iter<'a, T>;
+/// #     fn into_iter(self) -> slice::Iter<'a, T> { self.iter() }
+/// # }
+/// # impl<'a, T> IntoIterator for &'a mut Vec<T> {
+/// #     type Iter = slice::IterMut<'a, T>;
+/// #     fn into_iter(self) -> slice::IterMut<'a, T> { self.iter_mut() }
+/// # }
+/// # fn main() {
+/// let chars = &['a', 'b', 'c'];
+/// let mut v = vec![0u, 1, 2];
+///
+/// for (&c, i, &mut j) in zip!(chars, range(0u, 5), &mut v) {
+///     assert!(i < 3);
+///     assert_eq!(i, j);
+/// }
+/// # }
+/// ```
+#[macro_export]
+macro_rules! zip {
+    ($a:expr, $b:expr) => {
+        ::zip::Zip2(($a).into_iter(), ($b).into_iter())
+    };
+    ($a:expr, $b:expr, $c:expr) => {
+        ::zip::Zip3(($a).into_iter(), ($b).into_iter(), ($c).into_iter())
+    };
+    ($a:expr, $b:expr, $c:expr, $d:expr) => {
+        ::zip::Zip4(($a).into_iter(), ($b).into_iter(), ($c).into_iter(), ($d).into_iter())
+    };
+    ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr) => {
+        ::zip::Zip5(
+            ($a).into_iter(),
+            ($b).into_iter(),
+            ($c).into_iter(),
+            ($d).into_iter(),
+            ($e).into_iter(),
+        )
+    };
+    ($($x:expr),+,) => { zip!($($x),+) }
+}
 
 macro_rules! min {
     ($x:expr) => { $x };
