@@ -13,13 +13,14 @@
 //! use zip::Zip3;
 //!
 //! let chars = &['a', 'b', 'c'];
-//! let mut v = vec![0u, 1, 2];
-//! for (&c, i, &mut j) in Zip3(chars.iter(), range(0u, 5), v.iter_mut()) {
+//! let mut v = vec![0, 1, 2];
+//! for (&c, i, &mut j) in Zip3(chars.iter(), 0..5, v.iter_mut()) {
 //!     assert!(i < 3);
 //!     assert_eq!(i, j);
 //! }
 //! ```
 
+#![allow(unstable)]
 #![deny(missing_docs, warnings)]
 
 /// This macro emulates an "any-arity" free function that zips iterators
@@ -52,9 +53,9 @@
 /// # }
 /// # fn main() {
 /// let chars = &['a', 'b', 'c'];
-/// let mut v = vec![0u, 1, 2];
+/// let mut v = vec![0, 1, 2];
 ///
-/// for (&c, i, &mut j) in zip!(chars, range(0u, 5), &mut v) {
+/// for (&c, i, &mut j) in zip!(chars, 0..5, &mut v) {
 ///     assert!(i < 3);
 ///     assert_eq!(i, j);
 /// }
@@ -108,7 +109,7 @@ impl<A, B, AI, BI> Iterator for Zip2<AI, BI> where
         None
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         (min!{
             self.0.size_hint().0,
             self.1.size_hint().0,
@@ -138,7 +139,7 @@ impl<A, B, C, AI, BI, CI> Iterator for Zip3<AI, BI, CI> where
         None
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         (min!{
             self.0.size_hint().0,
             self.1.size_hint().0,
@@ -172,7 +173,7 @@ impl<A, B, C, D, AI, BI, CI, DI> Iterator for Zip4<AI, BI, CI, DI> where
         None
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         (min!{
             self.0.size_hint().0,
             self.1.size_hint().0,
@@ -210,7 +211,7 @@ impl<A, B, C, D, E, AI, BI, CI, DI, EI> Iterator for Zip5<AI, BI, CI, DI, EI> wh
         None
     }
 
-    fn size_hint(&self) -> (uint, Option<uint>) {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         (min!{
             self.0.size_hint().0,
             self.1.size_hint().0,
@@ -227,7 +228,7 @@ mod bench {
 
     use self::test::Bencher;
 
-    const SIZE: uint = 1024;
+    const SIZE: usize = 1024;
 
     #[bench]
     fn collect2(z: &mut Bencher) {
