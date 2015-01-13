@@ -3,8 +3,7 @@ sudo: false
 
 env:
   global:
-    - secure: IAFFw5r4IMQfI/cVeiPxmuFJidy5TI5Uh5xueLw5j5EtMC046LyRSQrsRwtzSzGdW8i3VfDLATgs7KOJsDbVl3ajKWy6Us9eHwq4kWyBqmgEUbLIj1t/M9IslSe0sJNiGznRcJXoJELm6t6KsZFVLTQIGaW/iAqVrO9jkpjUBvY=
-
+    - secure: ED4qhd/s11JXobaeA+vSdRx6BqV44BXrSD2Sqziultf4SdMsVC8o7BaGJKFUr5vPo1iaNRU3V0ISXS8/yQPF+yBIA2w+XlUfezp6IM1aTONiw1CPgMAqAc3ABI1Lkj4HCz8JMHWvqeyHfhcCS0OTDILPdwRKeaWPNE+nmzB82gM=
 script:
   - cargo build --verbose
   - cargo test --verbose
