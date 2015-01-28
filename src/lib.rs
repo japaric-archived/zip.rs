@@ -14,7 +14,7 @@
 //!
 //! let chars = &['a', 'b', 'c'];
 //! let mut v = vec![0, 1, 2];
-//! for (&c, i, &mut j) in Zip3(chars.iter(), 0..5, v.iter_mut()) {
+//! for (&c, i, &mut j) in Zip3(chars.iter(), 0i32..5, v.iter_mut()) {
 //!     assert!(i < 3);
 //!     assert_eq!(i, j);
 //! }
@@ -55,7 +55,7 @@
 /// let chars = &['a', 'b', 'c'];
 /// let mut v = vec![0, 1, 2];
 ///
-/// for (&c, i, &mut j) in zip!(chars, 0..5, &mut v) {
+/// for (&c, i, &mut j) in zip!(chars, 0i32..5, &mut v) {
 ///     assert!(i < 3);
 ///     assert_eq!(i, j);
 /// }
