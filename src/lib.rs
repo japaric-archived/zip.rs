@@ -12,7 +12,7 @@
 //! ```
 //! use zip::Zip3;
 //!
-//! let chars = &['a', 'b', 'c'];
+//! let chars = ['a', 'b', 'c'];
 //! let mut v = vec![0, 1, 2];
 //! for (&c, i, &mut j) in Zip3(chars.iter(), 0i32..5, v.iter_mut()) {
 //!     assert!(i < 3);
@@ -20,13 +20,10 @@
 //! }
 //! ```
 
-#![allow(unstable)]
+#![cfg_attr(test, feature(test))]
 #![deny(missing_docs, warnings)]
 
 /// This macro emulates an "any-arity" free function that zips iterators
-///
-/// **Note** This macro calls `into_iter()` on the inputs. For this reason, this macro won't work
-/// until `IntoIterator` lands in stdlib, or unless you provide your own `IntoIterator` trait.
 ///
 /// # Examples
 ///
@@ -34,28 +31,11 @@
 /// #[macro_use]
 /// extern crate zip;
 ///
-/// # use std::slice;
-/// # trait IntoIterator {
-/// #     type Iter: Iterator;
-/// #     fn into_iter(self) -> Self::Iter;
-/// # }
-/// # impl<I> IntoIterator for I where I: Iterator {
-/// #     type Iter = I;
-/// #     fn into_iter(self) -> I { self }
-/// # }
-/// # impl<'a, T> IntoIterator for &'a [T] {
-/// #     type Iter = slice::Iter<'a, T>;
-/// #     fn into_iter(self) -> slice::Iter<'a, T> { self.iter() }
-/// # }
-/// # impl<'a, T> IntoIterator for &'a mut Vec<T> {
-/// #     type Iter = slice::IterMut<'a, T>;
-/// #     fn into_iter(self) -> slice::IterMut<'a, T> { self.iter_mut() }
-/// # }
 /// # fn main() {
-/// let chars = &['a', 'b', 'c'];
+/// let chars = ['a', 'b', 'c'];
 /// let mut v = vec![0, 1, 2];
 ///
-/// for (&c, i, &mut j) in zip!(chars, 0i32..5, &mut v) {
+/// for (&c, i, &mut j) in zip!(&chars, 0..5, &mut v) {
 ///     assert!(i < 3);
 ///     assert_eq!(i, j);
 /// }
@@ -64,21 +44,33 @@
 #[macro_export]
 macro_rules! zip {
     ($a:expr, $b:expr) => {
-        $crate::Zip2(($a).into_iter(), ($b).into_iter())
+        $crate::Zip2(
+            ::std::iter::IntoIterator::into_iter($a),
+            ::std::iter::IntoIterator::into_iter($b),
+        )
     };
     ($a:expr, $b:expr, $c:expr) => {
-        $crate::Zip3(($a).into_iter(), ($b).into_iter(), ($c).into_iter())
+        $crate::Zip3(
+            ::std::iter::IntoIterator::into_iter($a),
+            ::std::iter::IntoIterator::into_iter($b),
+            ::std::iter::IntoIterator::into_iter($c),
+        )
     };
     ($a:expr, $b:expr, $c:expr, $d:expr) => {
-        $crate::Zip4(($a).into_iter(), ($b).into_iter(), ($c).into_iter(), ($d).into_iter())
+        $crate::Zip4(
+            ::std::iter::IntoIterator::into_iter($a),
+            ::std::iter::IntoIterator::into_iter($b),
+            ::std::iter::IntoIterator::into_iter($c),
+            ::std::iter::IntoIterator::into_iter($d),
+        )
     };
     ($a:expr, $b:expr, $c:expr, $d:expr, $e:expr) => {
         $crate::Zip5(
-            ($a).into_iter(),
-            ($b).into_iter(),
-            ($c).into_iter(),
-            ($d).into_iter(),
-            ($e).into_iter(),
+            ::std::iter::IntoIterator::into_iter($a),
+            ::std::iter::IntoIterator::into_iter($b),
+            ::std::iter::IntoIterator::into_iter($c),
+            ::std::iter::IntoIterator::into_iter($d),
+            ::std::iter::IntoIterator::into_iter($e),
         )
     };
     ($($x:expr),+,) => { zip!($($x),+) }
@@ -91,15 +83,14 @@ macro_rules! min {
 }
 
 /// Two-iterator zipper
-pub struct Zip2<A, B>(pub A, pub B);
+pub struct Zip2<A, B>(pub A, pub B) where
+    A: Iterator,
+    B: Iterator;
 
-impl<A, B, AI, BI> Iterator for Zip2<AI, BI> where
-    AI: Iterator<Item=A>,
-    BI: Iterator<Item=B>,
-{
-    type Item = (A, B);
+impl<A: Iterator, B: Iterator> Iterator for Zip2<A, B> {
+    type Item = (A::Item, B::Item);
 
-    fn next(&mut self) -> Option<(A, B)> {
+    fn next(&mut self) -> Option<(A::Item, B::Item)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
                 return Some((a, b));
@@ -110,7 +101,7 @@ impl<A, B, AI, BI> Iterator for Zip2<AI, BI> where
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        (min!{
+        (min! {
             self.0.size_hint().0,
             self.1.size_hint().0,
         }, None)
@@ -118,16 +109,15 @@ impl<A, B, AI, BI> Iterator for Zip2<AI, BI> where
 }
 
 /// Three-iterator zipper
-pub struct Zip3<A, B, C>(pub A, pub B, pub C);
+pub struct Zip3<A, B, C>(pub A, pub B, pub C) where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator;
 
-impl<A, B, C, AI, BI, CI> Iterator for Zip3<AI, BI, CI> where
-    AI: Iterator<Item=A>,
-    BI: Iterator<Item=B>,
-    CI: Iterator<Item=C>,
-{
-    type Item = (A, B, C);
+impl<A: Iterator, B: Iterator, C: Iterator> Iterator for Zip3<A, B, C> {
+    type Item = (A::Item, B::Item, C::Item);
 
-    fn next(&mut self) -> Option<(A, B, C)> {
+    fn next(&mut self) -> Option<(A::Item, B::Item, C::Item)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
                 if let Some(c) = self.2.next() {
@@ -149,17 +139,16 @@ impl<A, B, C, AI, BI, CI> Iterator for Zip3<AI, BI, CI> where
 }
 
 /// Four-iterator zipper
-pub struct Zip4<A, B, C, D>(pub A, pub B, pub C, pub D);
+pub struct Zip4<A, B, C, D>(pub A, pub B, pub C, pub D) where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator,
+    D: Iterator;
 
-impl<A, B, C, D, AI, BI, CI, DI> Iterator for Zip4<AI, BI, CI, DI> where
-    AI: Iterator<Item=A>,
-    BI: Iterator<Item=B>,
-    CI: Iterator<Item=C>,
-    DI: Iterator<Item=D>,
-{
-    type Item = (A, B, C, D);
+impl<A: Iterator, B: Iterator, C: Iterator, D: Iterator> Iterator for Zip4<A, B, C, D> {
+    type Item = (A::Item, B::Item, C::Item, D::Item);
 
-    fn next(&mut self) -> Option<(A, B, C, D)> {
+    fn next(&mut self) -> Option<(A::Item, B::Item, C::Item, D::Item)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
                 if let Some(c) = self.2.next() {
@@ -184,18 +173,19 @@ impl<A, B, C, D, AI, BI, CI, DI> Iterator for Zip4<AI, BI, CI, DI> where
 }
 
 /// Five-iterator zipper
-pub struct Zip5<A, B, C, D, E>(pub A, pub B, pub C, pub D, pub E);
+pub struct Zip5<A, B, C, D, E>(pub A, pub B, pub C, pub D, pub E) where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator,
+    D: Iterator,
+    E: Iterator;
 
-impl<A, B, C, D, E, AI, BI, CI, DI, EI> Iterator for Zip5<AI, BI, CI, DI, EI> where
-    AI: Iterator<Item=A>,
-    BI: Iterator<Item=B>,
-    CI: Iterator<Item=C>,
-    DI: Iterator<Item=D>,
-    EI: Iterator<Item=E>,
-{
-    type Item = (A, B, C, D, E);
+impl<A: Iterator, B: Iterator, C: Iterator, D: Iterator, E: Iterator>
+Iterator
+for Zip5<A, B, C, D, E> {
+    type Item = (A::Item, B::Item, C::Item, D::Item, E::Item);
 
-    fn next(&mut self) -> Option<(A, B, C, D, E)> {
+    fn next(&mut self) -> Option<(A::Item, B::Item, C::Item, D::Item, E::Item)> {
         if let Some(a) = self.0.next() {
             if let Some(b) = self.1.next() {
                 if let Some(c) = self.2.next() {
