@@ -87,7 +87,10 @@ pub struct Zip2<A, B>(pub A, pub B) where
     A: Iterator,
     B: Iterator;
 
-impl<A: Iterator, B: Iterator> Iterator for Zip2<A, B> {
+impl<A, B> Iterator for Zip2<A, B> where
+    A: Iterator,
+    B: Iterator,
+{
     type Item = (A::Item, B::Item);
 
     fn next(&mut self) -> Option<(A::Item, B::Item)> {
@@ -114,7 +117,11 @@ pub struct Zip3<A, B, C>(pub A, pub B, pub C) where
     B: Iterator,
     C: Iterator;
 
-impl<A: Iterator, B: Iterator, C: Iterator> Iterator for Zip3<A, B, C> {
+impl<A, B, C> Iterator for Zip3<A, B, C> where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator,
+{
     type Item = (A::Item, B::Item, C::Item);
 
     fn next(&mut self) -> Option<(A::Item, B::Item, C::Item)> {
@@ -145,7 +152,12 @@ pub struct Zip4<A, B, C, D>(pub A, pub B, pub C, pub D) where
     C: Iterator,
     D: Iterator;
 
-impl<A: Iterator, B: Iterator, C: Iterator, D: Iterator> Iterator for Zip4<A, B, C, D> {
+impl<A, B, C, D> Iterator for Zip4<A, B, C, D> where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator,
+    D: Iterator,
+{
     type Item = (A::Item, B::Item, C::Item, D::Item);
 
     fn next(&mut self) -> Option<(A::Item, B::Item, C::Item, D::Item)> {
@@ -180,9 +192,13 @@ pub struct Zip5<A, B, C, D, E>(pub A, pub B, pub C, pub D, pub E) where
     D: Iterator,
     E: Iterator;
 
-impl<A: Iterator, B: Iterator, C: Iterator, D: Iterator, E: Iterator>
-Iterator
-for Zip5<A, B, C, D, E> {
+impl<A, B, C, D, E> Iterator for Zip5<A, B, C, D, E> where
+    A: Iterator,
+    B: Iterator,
+    C: Iterator,
+    D: Iterator,
+    E: Iterator,
+{
     type Item = (A::Item, B::Item, C::Item, D::Item, E::Item);
 
     fn next(&mut self) -> Option<(A::Item, B::Item, C::Item, D::Item, E::Item)> {
