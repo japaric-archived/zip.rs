@@ -1,3 +1,16 @@
+# Status
+
+This project has been **DEPRECATED** in favor of [itertools]' [`izip!`] macro.
+
+[itertools]: https://crates.io/crates/itertools
+[`izip!`]: http://bluss.github.io/rust-itertools/doc/itertools/macro.izip!.html
+
+This project won't receive further updates or bug fixes.
+
+-- @japaric, 2016/02/08
+
+---
+
 [![Build Status][status]](https://travis-ci.org/japaric/zip.rs)
 
 # `zip.rs`
